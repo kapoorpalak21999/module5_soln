@@ -73,13 +73,15 @@ var switchMenuToActive = function () {
 // On page load (before images or CSS)
 document.addEventListener("DOMContentLoaded", function (event) {
 
-// On first load, show home view
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl,
   buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
   true);
-}); 
+}); // Explicitly setting the flag to get JSON from server processed into an object literal
+
+
+
 // Load the menu categories view
 dc.loadMenuCategories = function () {
   showLoading("#main-content");
@@ -97,30 +99,6 @@ dc.loadMenuItems = function (categoryShort) {
     menuItemsUrl + categoryShort,
     buildAndShowMenuItemsHTML);
 };
-  
-function buildAndShowHomeHTML (categories) {
-
-  // Load home snippet page
-  $ajaxUtils.sendGetRequest(
-  homeHtml,
-    function (homeHtml) {
-          var chosenCategoryShortName = chooseRandomCategory(categories).short_name;
-          //chosenCategoryShortName = "'" + chosenCategoryShortName + "'";
- 
-          var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", chosenCategoryShortName);
-          insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
-        },
-        false);
-    };
-
-
-function chooseRandomCategory (categories) {
-  // Choose a random index into the array (from 0 inclusively until array length (exclusively))
-  var randomArrayIndex = Math.floor(Math.random() * categories.length);
-
-  // return category object with that randomArrayIndex
-  return categories[randomArrayIndex];
-}
 
 
 // Builds HTML for the categories page based on the data
@@ -177,7 +155,29 @@ function buildCategoriesViewHtml(categories,
   return finalHtml;
 }
 
+function buildAndShowHomeHTML (categories) {
 
+  // Load home snippet page
+  $ajaxUtils.sendGetRequest(
+  homeHtml,
+    function (homeHtml) {
+          var chosenCategoryShortName = chooseRandomCategory(categories).short_name;
+          //chosenCategoryShortName = "'" + chosenCategoryShortName + "'";
+ 
+          var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", chosenCategoryShortName);
+          insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
+        },
+        false);
+    };
+
+
+function chooseRandomCategory (categories) {
+  // Choose a random index into the array (from 0 inclusively until array length (exclusively))
+  var randomArrayIndex = Math.floor(Math.random() * categories.length);
+
+  // return category object with that randomArrayIndex
+  return categories[randomArrayIndex];
+}
 
 // Builds HTML for the single category page based on the data
 // from the server
