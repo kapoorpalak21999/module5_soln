@@ -104,7 +104,6 @@ function buildAndShowHomeHTML (categories) {
   $ajaxUtils.sendGetRequest(
   homeHtml,
     function (homeHtml) {
-          switchMenuToActive();
           var chosenCategoryShortName = chooseRandomCategory(categories).short_name;
           //chosenCategoryShortName = "'" + chosenCategoryShortName + "'";
  
